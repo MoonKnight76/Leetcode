@@ -1,7 +1,9 @@
-DELETE from Person where id not in(
-SELECT id FROM(
-SELECT email ,id, row_number() over(partition by email order by id asc) as rn
+# Write your MySQL query statement below
+DELETE FROM person where id in(
+with cte as(
+SELECT email, max(id) id
 from Person
-) 
-where rn=1
+group by email
+having count(email)>1
 )
+SELECT id from cte)
